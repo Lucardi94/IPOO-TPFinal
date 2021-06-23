@@ -1,0 +1,77 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE TABLE teatro (
+	idteatro bigint(20) AUTO_INCREMENT,
+	nombre varchar(30) NOT NULL,
+	direccion varchar(30) NOT NULL,
+	PRIMARY KEY (idteatro)
+) ENGINE=INNODB CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE funcion (
+ 	idfuncion bigint(20) AUTO_INCREMENT,
+	nombre varchar(30) NOT NULL,
+	precio int(5) NOT NULL,
+	horainicio datetime NOT NULL,
+	duracion int(3) NOT NULL,
+	idteatro bigint(20) NOT NULL,
+	PRIMARY KEY (idfuncion, idteatro),
+ 	FOREIGN KEY (idteatro) REFERENCES teatro(idteatro)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+	 
+CREATE TABLE funcionteatro (
+ 	idfuncion bigint(20) NOT NULL,
+	PRIMARY KEY (idfuncion),
+ 	FOREIGN KEY (idfuncion) REFERENCES funcion(idfuncion)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE funcioncine (
+ 	idfuncion bigint(20) NOT NULL,
+ 	genero varchar(30) NOT NULL,
+	paisorigen varchar(30) NOT NULL,
+	PRIMARY KEY (idfuncion),
+ 	FOREIGN KEY (idfuncion) REFERENCES funcion(idfuncion)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE funcionmusical (
+ 	idfuncion bigint(20) NOT NULL,
+ 	director varchar(30) NOT NULL,
+	cantidadpersonas int(4) NOT NULL,
+	PRIMARY KEY (idfuncion),
+ 	FOREIGN KEY (idfuncion) REFERENCES funcion(idfuncion)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO teatro (idteatro,nombre,direccion) VALUE 
+(NULL,'Villas','Amante Cerralima 1111'),
+(NULL,'Portugues','Amante Cerralima 900'),
+(NULL,'Teatro Colon','Amante Cerralima 1259');
+
+INSERT INTO funcion (idfuncion,nombre,precio,horainicio,duracion,idteatro) VALUE
+(NULL,'Pepito',1000,'2000-02-01 18:59',60,1),
+(NULL,'Pin Pon',2000,'2000-02-01 14:59',90,1),
+(NULL,'Blas',2500,'2000-02-01 12:59',75,1),
+(NULL,'Pepito',2000,'2000-02-01 18:59',60,2),
+(NULL,'Pin Pon',1000,'2000-02-01 14:59',90,2),
+(NULL,'Blas',2500,'2000-02-01 12:59',75,2),
+(NULL,'Pepito',1000,'2000-02-01 18:59',60,3),
+(NULL,'Pin Pon',2500,'2000-02-01 14:59',90,3),
+(NULL,'Blas',2000,'2000-02-01 12:59',75,3);
+
+INSERT INTO  funcionteatro (idfuncion) VALUE
+(1),
+(4),
+(7);
+
+INSERT INTO funcioncine (idfuncion,genero,paisorigen) VALUE
+(2,'accion','india'),
+(5,'humor','inglaterra'),
+(8,'Ficcion','EEUU');
+
+INSERT INTO funcionmusical (idfuncion,director,cantidadpersonas) VALUE
+(2,'Humerto Velez',20),
+(5,'Tito Puentes',50),
+(8,'Antiona Julia',125);
+
