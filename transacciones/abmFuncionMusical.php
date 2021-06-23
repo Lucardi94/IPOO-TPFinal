@@ -55,12 +55,6 @@
         }
 
         //FUNCIONES
-        public function calcularFin($hora, $duracion){
-            // Retorna el calculo de sumar el Inicion con las duracion de la pelicula
-            $fin=$hora;                
-            $fin->add(new DateInterval('PT'.$duracion.'M'));
-            return $fin;
-        }
 
         public function funcionPosible($objFuncion, $newFuncion){
             /***
@@ -68,17 +62,21 @@
              * Busca si coiciden las fechas de horaInicion y fin de ambas.
              * En caso de ser verdadero alguno, Comprueba si los horarios se tocan.
              */
+
             $iniA=new DateTime($objFuncion->gethoraInicio());
             $iniB=new DateTime($newFuncion->gethoraInicio());
-            $finA=$this->calcularFin($iniA, $objFuncion->getDuracion());
-            $finB=$this->calcularFin($iniB, $newFuncion->getDuracion());
-            
+            $finA=strtotime( '+ '.$objFuncion->getDuracion().'minute' ,strtotime($newFuncion->gethoraInicio()));
+            $finB=strtotime( '+ '.$newFuncion->getDuracion().'minute' ,strtotime($objFuncion->gethoraInicio()));
+            $finA=new DateTime($finA);
+            $finB=new DateTime($finB);
+
+
             if (($iniA<$iniB && $finA>$finB) || ($iniA>$iniB && $finA<$finB)){  //Esta Condicion elimina dos errores que imagine
-                $posible = FALSE;                                               //Primer es si la funcion comienza antes y termina despues de la otra funcion
+                $posible = FALSE;                                              //Primer es si la funcion comienza antes y termina despues de la otra funcion
             } else{                                                             //Segundo si la funcion comienza y termina durante la otra funcion
-                if ($finA<$iniB){ $posible = TRUE; }
+                if ($finA<$iniB){ $posible = TRUE;}
                 elseif ($iniA>$finB){ $posible = TRUE; } 
-                else { $posible = FALSE; }
+                else { $posible = FALSE;}
             }
             return $posible;
         }
@@ -88,14 +86,12 @@
              *  Retorna un true o false sino existe el lugar disponible.
              *  Recorre la lista de forma parcial hasta encontra que un horario no es posible.
              */
-            print_r ($colFunciones);
             $horarioDisponible = TRUE;
             $i=0;
             while ($i < count($colFunciones) && $horarioDisponible){
                 $funcion = $colFunciones[$i];
-                if (!$this->funcionPosible($funcion, $newFuncion)){
-                    $horarioDisponible = FALSE;
-                }
+                if ($this->funcionPosible($funcion, $newFuncion)){
+                } else $horarioDisponible = FALSE;
                 $i++;
             }
             return $horarioDisponible;
