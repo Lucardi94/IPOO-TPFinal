@@ -64,10 +64,10 @@
              */
             $iniA=new DateTime($objFuncion->gethoraInicio());
             $iniB=new DateTime($newFuncion->gethoraInicio());
-            $finA=strtotime( '+ '.$objFuncion->getDuracion().'minute' ,strtotime($newFuncion->gethoraInicio()));
-            $finB=strtotime( '+ '.$newFuncion->getDuracion().'minute' ,strtotime($objFuncion->gethoraInicio()));
-            $finA=new DateTime($finA);
-            $finB=new DateTime($finB);
+            $finA=new DateTime($objFuncion->gethoraInicio());
+            $finB=new DateTime($newFuncion->gethoraInicio());
+            $finA->add(new DateInterval('PT'.$objFuncion->getDuracion().'M'));
+            $finB->add(new DateInterval('PT'.$newFuncion->getDuracion().'M'));
             
             if (($iniA<$iniB && $finA>$finB) || ($iniA>$iniB && $finA<$finB)){  //Esta Condicion elimina dos errores que imagine
                 $posible = FALSE;                                              //Primer es si la funcion comienza antes y termina despues de la otra funcion
