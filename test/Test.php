@@ -344,8 +344,9 @@
                     }
                 break;
                 case 4:
-                    echo "Ingrese id teatro y mes ";
+                    echo "Ingrese id teatro ";
                     $id = trim(fgets(STDIN));
+                    echo "Ingrese mes ";
                     $mes = trim(fgets(STDIN));                    
                     echo $abmTeatro->darCostoMensual($id, $mes);
                 break;
